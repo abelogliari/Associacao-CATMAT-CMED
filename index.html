@@ -1,0 +1,390 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Guia da revisão CATMAT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,650&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: guia de leitura em uma coluna (~68ch) com índice lateral fixo no desktop; cada aba segue o mesmo trio "o que mostra / como ler / o que fazer". */
+:root {
+  --bg: oklch(0.985 0.004 175);
+  --surface: oklch(0.96 0.008 175);
+  --fg: oklch(0.24 0.02 200);
+  --muted: oklch(0.47 0.02 200);
+  --line: oklch(0.88 0.012 180);
+  --accent: oklch(0.47 0.09 168);
+  --accent-soft: oklch(0.93 0.035 168);
+  --lv-a: oklch(0.5 0.11 150);  --lv-a-bg: oklch(0.94 0.045 150);
+  --lv-b: oklch(0.52 0.1 75);   --lv-b-bg: oklch(0.95 0.05 85);
+  --lv-c: oklch(0.5 0.1 250);   --lv-c-bg: oklch(0.94 0.035 250);
+  --lv-d: oklch(0.52 0.13 25);  --lv-d-bg: oklch(0.94 0.035 25);
+  --lv-i: oklch(0.5 0.02 200);  --lv-i-bg: oklch(0.93 0.008 200);
+  --f-display: "Literata", Georgia, "Times New Roman", serif;
+  --f-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: oklch(0.2 0.012 200); --surface: oklch(0.245 0.014 200); --fg: oklch(0.92 0.01 180);
+    --muted: oklch(0.7 0.015 190); --line: oklch(0.34 0.015 200);
+    --accent: oklch(0.76 0.1 168); --accent-soft: oklch(0.3 0.045 168);
+    --lv-a: oklch(0.78 0.12 150); --lv-a-bg: oklch(0.3 0.05 150);
+    --lv-b: oklch(0.8 0.11 80);   --lv-b-bg: oklch(0.32 0.05 80);
+    --lv-c: oklch(0.78 0.1 250);  --lv-c-bg: oklch(0.3 0.05 250);
+    --lv-d: oklch(0.76 0.12 25);  --lv-d-bg: oklch(0.31 0.05 25);
+    --lv-i: oklch(0.75 0.015 200); --lv-i-bg: oklch(0.3 0.01 200);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: oklch(0.2 0.012 200); --surface: oklch(0.245 0.014 200); --fg: oklch(0.92 0.01 180);
+  --muted: oklch(0.7 0.015 190); --line: oklch(0.34 0.015 200);
+  --accent: oklch(0.76 0.1 168); --accent-soft: oklch(0.3 0.045 168);
+  --lv-a: oklch(0.78 0.12 150); --lv-a-bg: oklch(0.3 0.05 150);
+  --lv-b: oklch(0.8 0.11 80);   --lv-b-bg: oklch(0.32 0.05 80);
+  --lv-c: oklch(0.78 0.1 250);  --lv-c-bg: oklch(0.3 0.05 250);
+  --lv-d: oklch(0.76 0.12 25);  --lv-d-bg: oklch(0.31 0.05 25);
+  --lv-i: oklch(0.75 0.015 200); --lv-i-bg: oklch(0.3 0.01 200);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 400 16px/1.62 var(--f-body); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 80px;
+  display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 56px; }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start;
+  font-size: 13.5px; display: grid; gap: 4px; }
+nav.toc b { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-block: 14px 4px; font-weight: 600; }
+nav.toc b:first-child { margin-top: 0; }
+nav.toc a { color: var(--fg); text-decoration: none; padding: 2px 0; display: flex; gap: 8px; align-items: baseline; }
+nav.toc a:hover, nav.toc a:focus-visible { color: var(--accent); }
+main { min-width: 0; max-width: 72ch; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; font-weight: 650; line-height: 1.2; }
+h1 { font-size: clamp(30px, 4.4vw, 40px); margin: 6px 0 14px; }
+h2 { font-size: 26px; margin: 64px 0 14px; padding-top: 18px; border-top: 1px solid var(--line); }
+h3 { font-size: 20px; margin: 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+.lede { font-size: 18px; color: var(--muted); }
+p { margin: 0 0 14px; }
+code, .mono { font-family: var(--f-mono); font-size: .88em; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+.callout { background: var(--accent-soft); border-radius: 10px; padding: 16px 18px; margin: 20px 0; }
+.callout p:last-child { margin: 0; }
+.status { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 22px 0; }
+.status div { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.status strong { display: block; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; }
+.status p { margin: 0; font-size: 14.5px; color: var(--muted); }
+
+/* registro ANVISA */
+.reg { font-family: var(--f-mono); font-size: clamp(20px, 3.4vw, 28px); display: flex; flex-wrap: wrap; gap: 6px 2px; margin: 18px 0 8px; align-items: flex-end; }
+.reg span { display: grid; gap: 4px; text-align: center; }
+.reg i { font-style: normal; padding: 2px 6px; border-radius: 6px; }
+.reg small { font-family: var(--f-body); font-size: 11.5px; color: var(--muted); letter-spacing: .04em; }
+.reg .r i { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.reg .p i { background: var(--surface); }
+.reg .sep { color: var(--muted); padding-bottom: 22px; }
+
+/* irmão x gêmeo */
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 20px 0; }
+.pair article { background: var(--surface); border-radius: 12px; padding: 18px; min-width: 0; }
+.pair h4 { margin: 0 0 4px; font-family: var(--f-display); font-size: 20px; }
+.pair .def { font-size: 14.5px; color: var(--muted); margin-bottom: 12px; }
+.rows { display: grid; gap: 8px; }
+.rowx { font-family: var(--f-mono); font-size: 12.5px; line-height: 1.45; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; overflow-wrap: anywhere; }
+.rowx .k { color: var(--accent); font-weight: 600; }
+.rowx .x { color: var(--muted); }
+.pair .foot { font-size: 13.5px; margin-top: 12px; color: var(--muted); }
+.pair .foot b { color: var(--fg); }
+
+.tbl { overflow-x: auto; margin: 16px 0 20px; }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--line); }
+th { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+td:first-child { font-family: var(--f-mono); font-weight: 600; white-space: nowrap; color: var(--accent); }
+dl.ader { display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; margin: 14px 0; }
+dl.ader dt { font-weight: 600; }
+dl.ader dd { margin: 0; color: var(--muted); }
+
+/* abas */
+.tab { margin: 34px 0; padding-top: 4px; }
+.chip { font-family: var(--f-body); font-size: 12px; font-weight: 700; letter-spacing: .04em; padding: 3px 9px; border-radius: 999px; font-variant-numeric: tabular-nums; }
+.c-a { background: var(--lv-a-bg); color: var(--lv-a); }
+.c-b { background: var(--lv-b-bg); color: var(--lv-b); }
+.c-c { background: var(--lv-c-bg); color: var(--lv-c); }
+.c-d { background: var(--lv-d-bg); color: var(--lv-d); }
+.c-i { background: var(--lv-i-bg); color: var(--lv-i); }
+.num { font-family: var(--f-mono); font-size: 13px; color: var(--muted); font-weight: 400; }
+.tab .what { margin: 10px 0 12px; }
+.tab ul { margin: 0 0 12px; padding-left: 20px; }
+.tab li { margin: 5px 0; }
+.todo { display: grid; grid-template-columns: max-content 1fr; gap: 12px; align-items: baseline; border-left: 3px solid var(--line); padding: 4px 0 4px 14px; margin-top: 10px; }
+.todo b { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.todo.act { border-color: var(--accent); }
+.todo.act b { color: var(--accent); }
+.ex { font-size: 14.5px; color: var(--muted); }
+
+ol.order { counter-reset: s; list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 12px; }
+ol.order li { counter-increment: s; display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: baseline; }
+ol.order li::before { content: counter(s); font-family: var(--f-display); font-size: 22px; color: var(--accent); font-weight: 650; }
+footer { margin-top: 56px; font-size: 13.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+
+@media (max-width: 860px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 0; padding-block: 28px 64px; padding-inline: 16px; }
+  nav.toc { display: none; }
+}
+@media (max-width: 600px) {
+  .pair, .status { grid-template-columns: minmax(0, 1fr); }
+  dl.ader { grid-template-columns: 1fr; gap: 2px 0; }
+  dl.ader dd { margin-bottom: 8px; }
+  .todo { grid-template-columns: 1fr; gap: 2px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+</style>
+
+<div class="wrap">
+  <nav class="toc" aria-label="Índice">
+    <b>Começo</b>
+    <a href="#proposito">Para que serve</a>
+    <a href="#conceitos">Conceitos</a>
+    <b>Abas</b>
+    <a href="#resumo">Resumo</a>
+    <a href="#conferencia">Conferência 6.4</a>
+    <a href="#nivel-a"><span class="chip c-a">A</span> Nível A</a>
+    <a href="#nivel-b"><span class="chip c-b">B</span> Nível B</a>
+    <a href="#nivel-c"><span class="chip c-c">C</span> Nível C</a>
+    <a href="#nivel-d"><span class="chip c-d">D</span> Nível D</a>
+    <a href="#fora">Fora</a>
+    <a href="#nao-tem">Não tem → possível CATMAT</a>
+    <a href="#conflitos">Conflitos</a>
+    <a href="#suspeitas">Suspeitas na GP</a>
+    <a href="#pontes">Pontes aprendidas</a>
+    <a href="#backtest">Backtest</a>
+    <b>Fim</b>
+    <a href="#ordem">Ordem de revisão</a>
+  </nav>
+
+  <main>
+    <div class="eyebrow">Grande Padrão CMED · rodada de outubro de 2026</div>
+    <h1>Guia da revisão CATMAT</h1>
+    <p class="lede">Como ler a planilha <code>revisao_catmat_2026-10.xlsx</code> e o que o farmacêutico precisa decidir em cada aba.</p>
+
+    <section id="proposito">
+      <h2>Para que serve</h2>
+      <p>Na Grande Padrão (GP), 715 registros ANVISA estavam sem CATMAT. O associador propôs, para cada um, o CATMAT, a descrição, a unidade de fornecimento e a Qt_Embal. Cada proposta vem com uma nota de confiança (nível A, B, C ou D) e com o motivo que a sustenta.</p>
+      <div class="status">
+        <div><strong><span class="chip c-a">Nível A</span></strong><p>Já gravado numa <b>cópia</b> da GP, nas colunas H a K. A GP original não foi tocada.</p></div>
+        <div><strong><span class="chip c-b">B</span> <span class="chip c-c">C</span> <span class="chip c-d">D</span></strong><p>Nada foi gravado. Cada linha depende da decisão do farmacêutico.</p></div>
+      </div>
+      <p>As abas <b>Não tem</b>, <b>Conflitos</b> e <b>Suspeitas</b> apontam possíveis problemas nos vínculos que já existiam na GP. São só informativas: nada foi corrigido.</p>
+    </section>
+
+    <section id="conceitos">
+      <h2>Conceitos que aparecem em toda a planilha</h2>
+
+      <h3>Raiz do registro</h3>
+      <p style="margin-top:8px">O registro ANVISA tem 13 dígitos. Os 9 primeiros identificam o produto de uma empresa; os 4 últimos identificam a apresentação.</p>
+      <div class="reg" aria-label="Registro 1.0043.1583.001-6: raiz 100431583, apresentação 0016">
+        <span class="r"><i>1</i><small>&nbsp;</small></span><span class="sep">.</span>
+        <span class="r"><i>0043</i><small>empresa</small></span><span class="sep">.</span>
+        <span class="r"><i>1583</i><small>produto</small></span><span class="sep">.</span>
+        <span class="p"><i>001</i><small>apresentação</small></span><span class="sep">-</span>
+        <span class="p"><i>6</i><small>dígito</small></span>
+      </div>
+      <p class="ex">Raiz = <code>100431583</code>, os dígitos destacados.</p>
+
+      <h3 style="margin-top:26px">Assinatura</h3>
+      <p style="margin-top:8px">É a identidade farmacêutica da apresentação, sem a embalagem secundária: os princípios ativos (em ordem alfabética, com o sal padronizado) mais a apresentação até o primeiro marcador de embalagem, isto é, a dose e a forma.</p>
+      <div class="rowx"><span class="k">ÁCIDO TRANEXÂMICO | 50 MG/ML SOL INJ IV</span> <span class="x">CT 5 AMP VD TRANS X 5 ML</span></div>
+      <p class="ex" style="margin-top:8px">A parte em destaque é a assinatura. "CT 5 AMP" fica de fora porque a quantidade na caixa não muda o CATMAT.</p>
+      <p>Também entram na chave os <b>acessórios que mudam o CATMAT</b>: diluente, sistema fechado, seringa preenchida, caneta, inalador, aplicador. Meropenem com bolsa (288298) tem CATMAT diferente de meropenem sem bolsa (268488). Para líquidos e injetáveis, a chave leva também o <b>volume</b>: adalimumabe 40 mg/0,4 mL não é o mesmo item que 40 mg/0,8 mL.</p>
+
+      <h3 style="margin-top:26px">Irmão e gêmeo</h3>
+      <div class="pair">
+        <article>
+          <h4>Irmão</h4>
+          <p class="def">Mesma raiz (mesma empresa, mesmo produto), mesma assinatura e mesmos acessórios. Só muda a quantidade na caixa.</p>
+          <div class="rows">
+            <div class="rowx"><span class="k">110110052</span>0014 · 50 MG/ML SOL INJ IV <span class="x">CT 5 AMP</span></div>
+            <div class="rowx"><span class="k">110110052</span>0022 · 50 MG/ML SOL INJ IV <span class="x">CT 50 AMP</span></div>
+          </div>
+          <p class="foot">Se o irmão já tem CATMAT, a nova apresentação deveria ter o mesmo. É o precedente mais forte: <b>99,7% de acerto</b> no teste.</p>
+        </article>
+        <article>
+          <h4>Gêmeo</h4>
+          <p class="def">Raiz diferente (outra empresa ou outro produto) com a mesma assinatura.</p>
+          <div class="rows">
+            <div class="rowx">Kadiz · <span class="k">AZACITIDINA | 100 MG PO LIOF</span> → ?</div>
+            <div class="rowx">7 outros laboratórios · <span class="k">AZACITIDINA | 100 MG PO LIOF</span> → 383436</div>
+          </div>
+          <p class="foot">Só vira nível A se for <b>unânime</b> e aparecer em <b>2 ou mais raízes</b>. "Gêmeo+volume" quer dizer que o volume também bate.</p>
+        </article>
+      </div>
+      <p>Um gêmeo de uma única empresa não basta, porque um vínculo errado se copiaria para todos os gêmeos.</p>
+
+      <h3 style="margin-top:26px">Precedente</h3>
+      <p style="margin-top:8px">É o CATMAT que a GP já usa para irmãos e gêmeos. A coluna "Evidência" mostra, por exemplo, <code>gêmeo: 383436 ×8 (8 raizes)</code>: 8 vínculos, em 8 empresas diferentes, todos com o mesmo código.</p>
+
+      <h3 style="margin-top:26px">Guardas G1 a G7</h3>
+      <p style="margin-top:8px">São as conferências farmacêuticas que todo CATMAT proposto precisa passar.</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Guarda</th><th>O que confere</th></tr></thead>
+        <tbody>
+          <tr><td>G1</td><td>O código existe no catálogo, está <b>Ativo</b> e não é insumo, item veterinário ou de manipulação.</td></tr>
+          <tr><td>G2</td><td>Os ingredientes são os mesmos: associação × monodroga, sal ou éster diferente (diclofenaco sódico × potássico), componente de vacina a mais.</td></tr>
+          <tr><td>G3</td><td>A dose bate em alguma leitura possível: por unidade, por mL ou total no recipiente. Kit só casa com CATMAT de kit.</td></tr>
+          <tr><td>G4</td><td>Via e forma: comprimido × cápsula, liberação prolongada, orodispersível. A diferença só pesa quando existe um CATMAT próprio para ela.</td></tr>
+          <tr><td>G5</td><td>Acessórios: seringa, caneta, sistema fechado.</td></tr>
+          <tr><td>G6</td><td>A classe terapêutica é coerente com o histórico do código. Só impede o nível A.</td></tr>
+          <tr><td>G7</td><td>Existe uma unidade de fornecimento oficial compatível com a apresentação.</td></tr>
+        </tbody>
+      </table></div>
+      <p class="ex">"n/v" numa guarda quer dizer que ela não pôde ser verificada, por exemplo porque o registro não traz a dose legível. Pede um olhar humano.</p>
+
+      <h3 style="margin-top:26px">Aderência (R14)</h3>
+      <dl class="ader">
+        <dt>exato</dt><dd>O CATMAT descreve exatamente a apresentação.</dd>
+        <dt>equivalente</dt><dd>Diferença só de redação, ou o CATMAT é mais genérico (por exemplo, não especifica "revestido").</dd>
+        <dt>aproximado</dt><dd>Há uma diferença aceitável que vale conferir, como liberação retardada × prolongada, ou um calendário citado no CATMAT e ausente no registro.</dd>
+      </dl>
+    </section>
+
+    <section>
+      <h2>As abas, uma a uma</h2>
+
+      <div class="tab" id="resumo">
+        <h3>Resumo <span class="chip c-i">informativa</span></h3>
+        <p class="what">Os números da rodada: tamanho da fila, quantos itens em cada nível, os "Não tem" revisados, as suspeitas e os resultados dos testes. Serve para dar a dimensão do trabalho.</p>
+        <div class="todo"><b>Fazer</b><span>Nada.</span></div>
+      </div>
+
+      <div class="tab" id="conferencia">
+        <h3>Conferência 6.4 <span class="chip c-i">informativa</span></h3>
+        <p class="what">A auditoria automática da cópia da GP:</p>
+        <ul>
+          <li>as fórmulas estão intactas;</li>
+          <li>só as linhas de nível A foram preenchidas, e só onde a coluna H estava vazia;</li>
+          <li>nenhuma linha que já tinha CATMAT ou status foi alterada.</li>
+        </ul>
+        <p>Traz também 30 itens do nível A sorteados e conferidos um a um.</p>
+        <div class="todo"><b>Fazer</b><span>Conferir que todas as linhas dizem "ok".</span></div>
+      </div>
+
+      <div class="tab" id="nivel-a">
+        <h3>Nível A <span class="chip c-a">já gravado</span> <span class="num">454 linhas</span></h3>
+        <p class="what">O precedente é unânime (irmão, ou gêmeo em 2 ou mais empresas), o CATMAT está ativo e as 7 guardas aprovaram.</p>
+        <ul>
+          <li><b>Como ler:</b> Apresentação → CATMAT e Descrição → Unidade e Qt_Embal.</li>
+          <li><b>Método</b> diz se veio de irmão ou de gêmeo; <b>Evidência</b> diz quantos vínculos sustentam a proposta.</li>
+        </ul>
+        <div class="todo"><b>Fazer</b><span>Uma amostragem basta. Um erro aqui quase sempre vem de um vínculo errado que já estava na GP e se propagou para o gêmeo. Nesse caso, avise para que o precedente seja corrigido.</span></div>
+      </div>
+
+      <div class="tab" id="nivel-b">
+        <h3>Nível B <span class="chip c-b">escolher</span> <span class="num">125 linhas</span></h3>
+        <p class="what">Existe um precedente, mas ele não é forte o bastante para gravar sozinho.</p>
+        <ul>
+          <li><b>Motivo do B</b> é a coluna mais importante. Os motivos mais comuns:
+            <ul>
+              <li><i>gêmeo de 1 raiz</i>: só uma empresa usa aquele código;</li>
+              <li><i>divergente</i>: irmãos ou gêmeos usam códigos diferentes;</li>
+              <li><i>CATMAT do precedente, hoje inativo</i>: o código que a GP usa foi desativado;</li>
+              <li><i>guarda reprovada</i>: o precedente diz X, mas a dose não confere.</li>
+            </ul>
+          </li>
+          <li><b>Opções:</b> os códigos que a GP usa, quantas vezes e em quantas empresas.</li>
+          <li><b>Candidatos do catálogo (top 3):</b> o que a busca no catálogo encontrou de forma independente.</li>
+        </ul>
+        <p class="ex">Exemplo: ácido tranexâmico 50 mg/mL, ampola de 5 mL → 327566. Ficou em B só porque o único precedente é de uma empresa, mas o catálogo confirma como <i>exato</i>. São linhas de aprovação rápida.</p>
+        <div class="todo act"><b>Decidir</b><span>Escolher o código certo, ou marcar como "Não tem".</span></div>
+      </div>
+
+      <div class="tab" id="nivel-c">
+        <h3>Nível C <span class="chip c-c">confirmar</span> <span class="num">87 linhas</span></h3>
+        <p class="what">Não havia precedente. O associador buscou no catálogo e a decisão foi tomada item a item, com justificativa farmacêutica escrita.</p>
+        <ul>
+          <li><b>Decisão/justificativa:</b> o raciocínio. Exemplo: "ENO 5 g: bicarbonato 2,30 g + ácido cítrico 2,20 g + carbonato 0,50 g".</li>
+          <li><b>Regras:</b> quais regras do critério foram aplicadas.</li>
+          <li><b>Aderência:</b> atenção redobrada nos <i>aproximados</i>. Exemplo: estradiol + noretisterona 1 + 0,5 mg → 448798, em que o CATMAT cita um calendário que o registro não menciona.</li>
+          <li><b>Guardas:</b> um "n/v" precisa de conferência humana.</li>
+        </ul>
+        <div class="todo act"><b>Decidir</b><span>Confirmar ou corrigir. Para confirmar, troque o autor da linha em <code>decisoes_catmat.csv</code> para o seu nome. A partir daí, a decisão vira precedente nas próximas rodadas.</span></div>
+      </div>
+
+      <div class="tab" id="nivel-d">
+        <h3>Nível D <span class="chip c-d">pedir CATMAT</span> <span class="num">49 linhas</span></h3>
+        <p class="what">A escada completa de equivalências (exato → equivalente → aproximado) foi percorrida e nada serviu.</p>
+        <ul>
+          <li><b>Justificativa:</b> por que não há CATMAT. Exemplo: "cenobamato kit 100 + 200 mg: o catálogo só tem 12,5/25 mg".</li>
+          <li><b>Busca feita:</b> cada termo procurado e quantos itens apareceram, para mostrar que a busca foi completa.</li>
+          <li><b>Itens ativos mais próximos:</b> o que existe no catálogo e qual atributo cada item contraria.</li>
+          <li><b>Rascunho do pedido de CATMAT:</b> o texto pronto no padrão do catálogo. Por isso a coluna xxx traz "planilhar".</li>
+        </ul>
+        <div class="todo act"><b>Decidir</b><span>Confirmar que realmente não existe CATMAT e revisar o rascunho do pedido.</span></div>
+      </div>
+
+      <div class="tab" id="fora">
+        <h3>Fora <span class="chip c-i">vazia</span></h3>
+        <p class="what">Seriam os registros de teste ANVISA (R12). Nesta rodada não houve nenhum.</p>
+      </div>
+
+      <div class="tab" id="nao-tem">
+        <h3>Não tem → possível CATMAT <span class="chip c-i">oportunidade</span> <span class="num">379 linhas</span></h3>
+        <p class="what">Os 1.461 registros que a GP já marca como "Não tem" foram revisados. Em 379 há um candidato ativo que passa nas guardas.</p>
+        <ul>
+          <li><b>Código ≥ 600000 = sim:</b> em geral é um código criado <b>depois</b> que a linha foi marcada "Não tem". O catálogo foi atualizado e ninguém voltou à linha. Exemplos: atezolizumabe SC 1.875 mg → 638778; remimazolam 20 mg → 639247.</li>
+        </ul>
+        <div class="todo"><b>Fazer</b><span>Nada foi aplicado. São oportunidades de reduzir os "Não tem", quando houver tempo.</span></div>
+      </div>
+
+      <div class="tab" id="conflitos">
+        <h3>Conflitos <span class="chip c-i">oportunidade</span> <span class="num">41 linhas</span></h3>
+        <p class="what">Linhas marcadas "Não tem" enquanto um irmão ou gêmeo, com a mesma assinatura, <b>tem</b> CATMAT. Uma das duas marcações está errada.</p>
+        <p class="ex">Exemplo: brigatinibe kit 90 + 180 mg está como "Não tem", mas um irmão está vinculado a 471040 (brigatinibe 90 mg). Aqui quem provavelmente erra é o irmão: um kit não deveria receber o CATMAT de dose única.</p>
+        <div class="todo"><b>Fazer</b><span>Decidir qual das duas marcações está certa.</span></div>
+      </div>
+
+      <div class="tab" id="suspeitas">
+        <h3>Suspeitas na GP <span class="chip c-i">curadoria futura</span> <span class="num">2.871 linhas</span></h3>
+        <p class="what">Vínculos <b>já existentes</b> em que alguma guarda reprova. As colunas "Guardas reprovadas" e "Atributos essenciais contrariados" dizem o que não bate.</p>
+        <ul>
+          <li>CATMAT inativo: abrocitinibe 615822.</li>
+          <li>Dose arredondada: clotrimazol + dexametasona 0,443 mg/g no registro × 0,4 mg/g no CATMAT.</li>
+          <li>Erro de verdade: pantoprazol convencional vinculado a CATMAT de liberação controlada.</li>
+        </ul>
+        <p>Muitas suspeitas são aceitáveis (arredondamentos, CATMAT mais genérico); outras são erro.</p>
+        <div class="todo"><b>Fazer</b><span>Fora do escopo desta rodada; nada foi alterado. Para uma curadoria futura, comece pelos inativos e pelas doses divergentes.</span></div>
+      </div>
+
+      <div class="tab" id="pontes">
+        <h3>Pontes aprendidas <span class="chip c-i">conferir por amostra</span> <span class="num">1.024 linhas</span></h3>
+        <p class="what">O dicionário que o sistema aprendeu lendo a própria GP: como a CMED escreve × como o catálogo escreve. Exemplo: "ACETATO DE ABIRATERONA" → "ABIRATERONA ACETATO", visto em 21 vínculos. Inclui também sinônimos DCB/INN, como epinefrina = adrenalina e nitrofurazona = nitrofural.</p>
+        <div class="todo"><b>Fazer</b><span>Uma passada rápida. Uma ponte errada vira um erro sistemático.</span></div>
+      </div>
+
+      <div class="tab" id="backtest">
+        <h3>Backtest <span class="chip c-i">informativa</span> <span class="num">227 linhas</span></h3>
+        <p class="what">O quanto o método acerta quando é testado sobre os vínculos que a GP já tem.</p>
+        <ul>
+          <li><b>6.1:</b> parte da GP foi escondida e o sistema a refez. O nível A acertou <b>99,7%</b> em 65% dos casos.</li>
+          <li><b>Desacordos:</b> cada caso em que o sistema discordou da GP, com o tipo provável. Em geral é a GP que está errada: omeprazol convencional → CATMAT de liberação prolongada; midazolam 1 × 5 mg/mL.</li>
+          <li><b>6.2, às cegas:</b> 200 substâncias sem nenhum precedente. O CATMAT certo veio em 1º lugar em <b>85%</b> dos casos, abaixo da meta de 90%.</li>
+        </ul>
+        <div class="callout"><p>É por causa do 6.2 que itens sem precedente nunca são gravados automaticamente: vão para C ou D, para revisão humana.</p></div>
+      </div>
+    </section>
+
+    <section id="ordem">
+      <h2>Ordem sugerida de revisão</h2>
+      <ol class="order">
+        <li><span><b>Nível B.</b> Muitas linhas são de aprovação rápida.</span></li>
+        <li><span><b>Nível C</b>, começando pelos <i>aproximados</i> e pelas guardas "n/v".</span></li>
+        <li><span><b>Nível D.</b> Conferir a justificativa e o rascunho do pedido.</span></li>
+        <li><span>Quando houver tempo: <b>Não tem → possível CATMAT</b> e <b>Conflitos</b>.</span></li>
+      </ol>
+    </section>
+
+    <footer>Rodada de 01/10/2026 · GP com registros de jan/2017 a ago/2026 · catálogo CATMAT de 11/07 · lista CMED de ago/2026.</footer>
+  </main>
+</div>
+
+</body></html>
